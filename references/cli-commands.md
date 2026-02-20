@@ -1,0 +1,158 @@
+# Sutro CLI Commands Reference
+
+Always use `--json` flag for structured output.
+
+## Identity & Context
+
+| Action | Command |
+|--------|---------|
+| Identity & unread counts | `sutro me --json` |
+| Priority triage | `sutro focus --json` |
+| Email-only triage | `sutro focus --domain email --json` |
+| GitHub-only triage | `sutro focus --domain github --json` |
+| Raw intents (debug) | `sutro intent --json` |
+
+When the user asks "What should I focus on?", use `sutro focus --json` first. Use `sutro intent --json` only to explain *why* extraction happened.
+
+## Inbox
+
+| Action | Command |
+|--------|---------|
+| Primary inbox | `sutro inbox --limit 10 --json` |
+| GitHub inbox | `sutro inbox github --json` |
+| Other inbox | `sutro inbox other --json` |
+| Custom inboxes | `sutro inbox list --json` |
+| Custom inbox threads | `sutro inbox show <slug> --json` |
+
+## Thread Operations
+
+| Action | Command |
+|--------|---------|
+| View thread | `sutro thread view <token> --json` |
+| Comment on thread | `sutro thread comment <token> "<msg>" --from-agent` |
+| Archive | `sutro thread archive <token>` |
+| Mark read | `sutro thread read <token>` |
+| Trash | `sutro thread trash <token>` |
+| Snooze | `sutro thread snooze <token> --until "<time>"` |
+
+Note: For `sutro thread comment`, you **must** pass `--from-agent` or the comment looks like it came from the user.
+
+## Compose & Drafts
+
+| Action | Command |
+|--------|---------|
+| Send email | `sutro compose --to "<email>" --subject "<subj>" --body "<body>" --send` |
+| Create draft | `sutro compose --to "<email>" --subject "<subj>" --body "<body>" --json` |
+| Edit draft | `sutro draft edit <id> --body "<body>" --json` |
+| Send draft | `sutro draft send <id>` |
+
+## Search
+
+```
+sutro search "<query>" --json
+```
+
+### Search Filters
+
+| Filter | Example | Description |
+|--------|---------|-------------|
+| `from:` | `from:john@example.com` | Match sender email or name |
+| `to:` | `to:team@sutro.email` | Match recipient email |
+| `subject:` | `subject:invoice` | Match subject line |
+| `in:archive` | `in:archive` | Search archived threads |
+| `has:attachment` | `has:attachment` | Threads with attachments |
+
+Examples:
+- `from:john subject:invoice` — emails from John about invoices
+- `from:"John Smith"` — emails from John Smith (use quotes for names with spaces)
+- `to:support@company.com urgent` — emails to support containing "urgent"
+
+## Contacts
+
+| Action | Command |
+|--------|---------|
+| (Contacts are accessed via search or thread viewing) | |
+
+## Files
+
+| Action | Command |
+|--------|---------|
+| View file | `sutro file view <id> --json` |
+| Summarize PDF | `sutro file summarize <id> --json` |
+
+## Conversations
+
+| Action | Command |
+|--------|---------|
+| List | `sutro conversation list --json` |
+| View | `sutro conversation view <id> --json` |
+| Reply as agent | `sutro conversation reply <id> "<msg>"` |
+
+Note: `sutro conversation reply` always posts as the agent — no `--from-agent` flag needed.
+
+## Automations
+
+| Action | Command |
+|--------|---------|
+| List automations | `sutro automation --json` |
+| View automation | `sutro automation view <id> --json` |
+| Create automation | `sutro automation create --from "..." --step archive` |
+| Update automation | `sutro automation update <id> --step ...` |
+| Delete automation | `sutro automation delete <id>` |
+
+> **Note:** `/filters` still works as an alias for backward compatibility.
+
+See the [automations reference](https://raw.githubusercontent.com/sutro-mail/sutro-skill/main/references/automations.md) for full details on steps, criteria, and examples.
+
+## Knowledge Sources
+
+| Action | Command |
+|--------|---------|
+| List KSs | `sutro ks --json` |
+| View KS | `sutro ks view <id> --json` |
+| Create KS | `sutro ks create --name "..." --json` |
+| Delete KS | `sutro ks delete <id>` |
+| Add source | `sutro ks add-source <id> --type github --repo owner/repo` |
+| Remove source | `sutro ks remove-source <ks> <src>` |
+
+### Add source
+
+```bash
+# GitHub repo (fetches .md/.mdx/.txt files from the folder)
+sutro ks add-source 1 --type github --repo sutro-eng/docs --path help/articles
+
+# Google Doc
+sutro ks add-source 1 --type google-doc --url "https://docs.google.com/document/d/..."
+```
+
+## Focus
+
+| Action | Command |
+|--------|---------|
+| Priority triage | `sutro focus --json` |
+| Email-only triage | `sutro focus --domain email --json` |
+| GitHub-only triage | `sutro focus --domain github --json` |
+
+## Auth
+
+Assume the user is authenticated. If you get an auth error, tell the user to run `sutro auth login`. Do not attempt to login yourself.
+
+## Doctor & Status
+
+| Action | Command |
+|--------|---------|
+| Check status | `sutro status --json` |
+| Run diagnostics | `sutro doctor --json` |
+
+## Account Types & Command Availability
+
+`GET /me` returns `user.account_type` with one of:
+- `"lite"`: API-only access with scoped tokens (no inbox sync/workspace data)
+- `"full"`: Full Sutro account access
+
+| Category | Commands |
+|----------|----------|
+| Works on Lite | `me`, `status`, `doctor`, `auth`, `search`, `thread`, `compose`, `draft`, `chat`, `conversation`, `config` |
+| Requires Full | `inbox`, `focus`, `intent`, `automation` (`filter`), `agent`, `skill`, `ks` (`kb`), `workspace`, `calendar`, `contact`, `file`, `github`, `linear` |
+
+When a Lite account runs a full-account command, the CLI returns an upgrade message with the upgrade URL.
