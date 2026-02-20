@@ -1,6 +1,6 @@
 ---
 name: sutro
-description: Manage your Sutro email inbox -- read threads, post comments, draft and send emails, manage GitHub issues, and search your inbox.
+description: Manage your Sutro email inbox — read threads, post comments, draft and send emails, search your inbox, and interact with your calendar.
 metadata: { "openclaw": { "emoji": "📧", "requires": { "env": ["SUTRO_TOKEN"] }, "primaryEnv": "SUTRO_TOKEN" } }
 ---
 
