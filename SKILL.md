@@ -77,7 +77,7 @@ When a Lite account runs a full-account command, the CLI returns an upgrade mess
 
 ## Webhook Events
 
-When Sutro sends a webhook, the payload tells you what the user wants. Two event types:
+When Sutro sends a webhook, the payload tells you what the user wants. Three event types:
 
 ### `mention` — user @mentioned the agent in a thread
 
@@ -118,12 +118,31 @@ When Sutro sends a webhook, the payload tells you what the user wants. Two event
 
 **Re-trigger prevention:** Messages posted with `from_agent: true` do **not** trigger outbound webhooks. This prevents infinite loops.
 
+### `email.received` — new email arrived (opt-in)
+
+This event is **opt-in** and disabled by default. Enable it per-agent in Settings > Agents. Designed to be lightweight — useful for monitoring, triage, and routing workflows.
+
+```json
+{
+  "event": "email.received",
+  "thread_token": "abc123",
+  "subject": "Invoice #1042",
+  "from": "billing@acme.com",
+  "preview": "Please find attached your invoice...",
+  "timestamp": "2026-02-20T..."
+}
+```
+
+**Respond by** reading the email with `sutro thread view <thread_token> --json`, then taking action only if warranted (e.g. error alerts, urgent requests). For most emails, no response is needed.
+
+> **Cost note:** At high email volume, `email.received` can generate many webhook calls. Each call runs your agent and incurs API usage. Enable only when you have a specific automation use case.
+
 ### Webhook Headers
 
 | Header | Description |
 |--------|-------------|
 | `Content-Type` | `application/json` |
-| `X-Webhook-Event` | Event type (`mention` or `conversation_message`) |
+| `X-Webhook-Event` | Event type (`mention`, `conversation_message`, or `email.received`) |
 | `X-Webhook-Signature` | HMAC-SHA256 signature of the request body |
 | `User-Agent` | `Sutro-Webhook/1.0` |
 | `Authorization` | `Bearer <auth_token>` (if configured on the endpoint) |
