@@ -1,0 +1,27 @@
+{
+  "name": "sutro-skill",
+  "displayName": "Sutro Email Skill",
+  "version": "1.0.0",
+  "description": "AI agent skill for Sutro — read threads, draft and send emails, manage your inbox, and interact with your calendar.",
+  "author": {
+    "name": "Connor Sears"
+  },
+  "publisher": "sutro-mail",
+  "homepage": "https://sutro.email",
+  "repository": "https://github.com/sutro-mail/sutro-skill",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "sutro",
+    "inbox",
+    "calendar",
+    "productivity"
+  ],
+  "category": "productivity",
+  "tags": [
+    "email",
+    "inbox",
+    "ai-agent"
+  ],
+  "skills": "./"
+}
