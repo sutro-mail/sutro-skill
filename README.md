@@ -4,6 +4,14 @@ A skill for AI agents working with [Sutro](https://sutro.email) — the programm
 
 Install this skill to bring full email context into your agent. Works with Claude Code, Cursor, OpenClaw, or any agent that reads markdown context.
 
+## Installation
+
+**Cursor** — Add this repo as a plugin source in Cursor settings, or copy `SKILL.md` directly into your project root.
+
+**Claude Code** — Copy `SKILL.md` into your project root. Claude Code will pick it up automatically on the next session.
+
+**OpenClaw** — Add the raw `SKILL.md` URL to your skill config, or clone this repo and point your `skills.load.extraDirs` at it.
+
 ## Repo Structure
 
 ```
