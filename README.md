@@ -1,4 +1,4 @@
-# sutro-skill
+# Sutro Skill
 Skill for AI agents working with Sutro
 
 ## Contributing
