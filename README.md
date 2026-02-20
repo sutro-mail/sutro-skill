@@ -6,7 +6,17 @@ Install this skill to bring full email context into your agent. Works with Claud
 
 ## Installation
 
-**Cursor** — Add this repo as a plugin source in Cursor settings, or copy `SKILL.md` directly into your project root.
+**skills.sh** — The quickest way to install:
+
+```bash
+npx skills add sutro-mail/sutro-skill
+```
+
+**Cursor** — In Cursor chat, run:
+
+```
+/add-plugin sutro-mail/sutro-skill
+```
 
 **Claude Code** — Copy `SKILL.md` into your project root. Claude Code will pick it up automatically on the next session.
 
