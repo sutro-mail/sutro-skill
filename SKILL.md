@@ -38,6 +38,8 @@ Agent API tokens have scopes that control what endpoints they can access. Scopes
 | `send` | Send emails (`POST /emails`), schedule/unschedule drafts |
 | `manage` | Archive, unarchive, trash, snooze, read/unread, block sender, unsubscribe, share, merge, bulk operations |
 | `admin` | Settings, automations, custom inboxes, knowledge sources, skills, agents, workspace invites |
+| `calendar_read` | View calendar events, availability, and pending invites |
+| `calendar_write` | Create, update, and delete events, respond to invites |
 
 **Default scopes for new agents:** `read`, `comment` (safe by default).
 
