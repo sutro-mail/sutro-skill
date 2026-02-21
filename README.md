@@ -47,4 +47,4 @@ sutro-skill/
 3. Submit a PR
 
 ## License
-MIT — Copyright (c) 2026 Connor Sears
+MIT — Copyright (c) 2026 Sutro Computer, LLC
