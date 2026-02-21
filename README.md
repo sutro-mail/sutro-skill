@@ -1,26 +1,9 @@
 # Sutro Skill
 
-A skill for AI agents working with [Sutro](https://sutro.email) — the programmable email client. Gives your agent the ability to read threads, draft and send emails, post comments, manage your inbox, and interact with your calendar.
+A skill for AI agents working with [Sutro](https://sutro.email). Scopes gives your agents a scoped Gmail and Calendar token with only the permissions they need — nothing more.
 
-Install this skill to bring full email context into your agent. Works with Claude Code, Cursor, OpenClaw, or any agent that reads markdown context.
+Works with any agent that reads markdown context.
 
-## Installation
-
-**skills.sh** — The quickest way to install:
-
-```bash
-npx skills add sutro-mail/sutro-skill
-```
-
-**Cursor** — In Cursor chat, run:
-
-```
-/add-plugin sutro-mail/sutro-skill
-```
-
-**Claude Code** — Copy `SKILL.md` into your project root. Claude Code will pick it up automatically on the next session.
-
-**OpenClaw** — Add the raw `SKILL.md` URL to your skill config, or clone this repo and point your `skills.load.extraDirs` at it.
 
 ## Repo Structure
 
@@ -47,4 +30,4 @@ sutro-skill/
 3. Submit a PR
 
 ## License
-MIT — Copyright (c) 2026 Sutro Computer, LLC
+MIT — Copyright (c) 2026 Connor Sears
