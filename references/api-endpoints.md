@@ -109,6 +109,7 @@ Use `attendee_emails` for create. For update, use `add_attendees` / `remove_atte
 | `PATCH` | `/threads/:token/unarchive` | Unarchive thread |
 | `PATCH` | `/threads/:token/read` | Mark read |
 | `PATCH` | `/threads/:token/unread` | Mark unread |
+| `PATCH` | `/threads/:token/labels` | Add/remove Gmail labels |
 | `DELETE` | `/threads/:token` | Trash thread |
 | `POST` | `/threads/:token/snooze` | Snooze thread |
 
@@ -128,6 +129,17 @@ Use `attendee_emails` for create. For update, use `add_attendees` / `remove_atte
 ```json
 { "snooze_until": "2026-02-10T09:00:00Z" }
 ```
+
+### Modify labels body
+
+```json
+{
+  "add_labels": ["Test"],
+  "remove_labels": ["INBOX"]
+}
+```
+
+`add_labels` and `remove_labels` accept label names or label IDs. When adding by name, missing custom labels are created automatically.
 
 ### Artifacts
 
@@ -159,22 +171,58 @@ Every artifact has `type` (required), `title`, `id`, `url`, and a `metadata` obj
 | `file` | `filename`, `size`, `mime_type` | File attachment card (set `url`) |
 | `canvas` | `sections`, `layout`, `refreshable` | Interactive UI element |
 
-## Emails
+## Compose and drafts (full account)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/emails` | Send email |
+| `POST` | `/emails` | Send email through Sutro-local compose pipeline |
+| `GET` | `/drafts` | List drafts |
+| `GET` | `/drafts/:id` | View draft |
+| `POST` | `/drafts` | Create draft |
+| `PATCH` | `/drafts/:id` | Update draft |
+| `DELETE` | `/drafts/:id` | Delete draft |
+| `POST` | `/drafts/:id/schedule` | Schedule draft |
+| `DELETE` | `/drafts/:id/schedule` | Unschedule draft |
 
+## Compose and drafts (lite pass-through Gmail)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/gmail/drafts` | List Gmail drafts (pass-through) |
+| `GET` | `/gmail/drafts/:id` | View Gmail draft |
+| `POST` | `/gmail/drafts` | Create Gmail draft |
+| `PATCH` | `/gmail/drafts/:id` | Update Gmail draft |
+| `DELETE` | `/gmail/drafts/:id` | Delete Gmail draft |
+| `POST` | `/gmail/drafts/:id/send` | Send existing Gmail draft |
+| `POST` | `/gmail/messages/send` | Send a new Gmail message (optionally with `thread_id`) |
+
+Lite pass-through draft IDs are Gmail draft IDs (string IDs), not local integer draft IDs.
+
+## Gmail pass-through thread actions (lite)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/gmail/threads` | List Gmail threads |
+| `GET` | `/gmail/threads/:id` | View Gmail thread |
+| `PATCH` | `/gmail/threads/:id/archive` | Archive thread |
+| `PATCH` | `/gmail/threads/:id/unarchive` | Unarchive thread |
+| `PATCH` | `/gmail/threads/:id/read` | Mark read |
+| `PATCH` | `/gmail/threads/:id/unread` | Mark unread |
+| `PATCH` | `/gmail/threads/:id/labels` | Add/remove labels |
+| `DELETE` | `/gmail/threads/:id/trash` | Trash thread |
+| `GET` | `/gmail/labels` | List Gmail labels |
+
+For `/gmail/threads/:id`, the `:id` value can be either a Gmail thread ID or a Sutro thread token.
+
+Labels body:
 ```json
-{ "to": "...", "subject": "...", "body": "..." }
+{
+  "add_labels": ["Test"],
+  "remove_labels": ["INBOX"]
+}
 ```
 
-## Drafts
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/drafts` | Create draft |
-| `POST` | `/drafts/:id` | Send draft |
+`add_labels` and `remove_labels` accept label names or label IDs. Adding by name creates missing custom labels automatically.
 
 ## Conversations
 
