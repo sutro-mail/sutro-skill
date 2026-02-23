@@ -35,6 +35,44 @@ Insufficient scope response (403):
 }
 ```
 
+## Calendar
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/calendar/events` | List events (`calendar_read`) |
+| `GET` | `/calendar/events/:id` | View one event (`calendar_read`) |
+| `GET` | `/calendar/availability` | Availability slots (`calendar_read`) |
+| `POST` | `/calendar/events` | Create event (`calendar_write`) |
+| `PATCH` | `/calendar/events/:id` | Update event (`calendar_write`) |
+| `DELETE` | `/calendar/events/:id` | Delete event (`calendar_write`) |
+| `POST` | `/calendar/events/:id/rsvp` | RSVP (`calendar_write`) |
+
+Create body:
+```json
+{
+  "event": {
+    "title": "Lunch meeting",
+    "time": "2026-02-24T12:00:00-08:00",
+    "duration_minutes": 60,
+    "attendee_emails": ["alice@example.com"],
+    "meeting_type": "video_call"
+  }
+}
+```
+
+Update body:
+```json
+{
+  "event": {
+    "new_time": "2026-02-25T14:00:00-08:00",
+    "add_attendees": ["bob@example.com"],
+    "remove_attendees": ["alice@example.com"]
+  }
+}
+```
+
+Use `attendee_emails` for create. For update, use `add_attendees` / `remove_attendees`.
+
 ## Identity
 
 | Method | Endpoint | Description |
