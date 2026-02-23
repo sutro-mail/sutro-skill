@@ -163,6 +163,6 @@ Assume the user is authenticated. If you get an auth error, tell the user to run
 | Category | Commands |
 |----------|----------|
 | Works on Lite | `me`, `status`, `doctor`, `auth`, `search`, `thread`, `compose`, `draft`, `chat`, `conversation`, `config` |
-| Requires Full | `inbox`, `focus`, `intent`, `automation` (`filter`), `agent`, `skill`, `ks` (`kb`), `workspace`, `calendar`, `contact`, `file`, `github`, `linear` |
+| Requires Full | `inbox`, `focus`, `intent`, `automation` (`filter`), `agent`, `skill`, `ks` (`kb`), `workspace`, `calendar`, `contact`, `file`, `github` |
 
 When a Lite account runs a full-account command, the CLI returns an upgrade message with the upgrade URL.
