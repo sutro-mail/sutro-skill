@@ -28,10 +28,13 @@ When the user asks "What should I focus on?", use `sutro focus --json` first. Us
 
 | Action | Command |
 |--------|---------|
+| List Gmail labels | `sutro label list --json` |
 | View thread | `sutro thread view <token> --json` |
 | Comment on thread | `sutro thread comment <token> "<msg>" --from-agent` |
 | Archive | `sutro thread archive <token>` |
 | Mark read | `sutro thread read <token>` |
+| Add label | `sutro thread label <token> "<label>"` |
+| Remove label | `sutro thread label <token> "<label>" --remove` |
 | Trash | `sutro thread trash <token>` |
 | Snooze | `sutro thread snooze <token> --until "<time>"` |
 
@@ -43,8 +46,15 @@ Note: For `sutro thread comment`, you **must** pass `--from-agent` or the commen
 |--------|---------|
 | Send email | `sutro compose --to "<email>" --subject "<subj>" --body "<body>" --send` |
 | Create draft | `sutro compose --to "<email>" --subject "<subj>" --body "<body>" --json` |
+| List drafts | `sutro draft list --json` |
+| View draft | `sutro draft view <id> --json` |
 | Edit draft | `sutro draft edit <id> --body "<body>" --json` |
 | Send draft | `sutro draft send <id>` |
+
+Routing behavior:
+- Lite accounts route compose/draft write commands to Gmail pass-through endpoints (`/api/v1/gmail/drafts`, `/api/v1/gmail/messages/send`).
+- Full accounts keep using Sutro inbox endpoints (`/api/v1/drafts`, `/api/v1/emails`).
+- Draft IDs can be numeric (full) or Gmail string IDs (lite). Use the ID exactly as returned by `sutro draft list --json`.
 
 ## Search
 
