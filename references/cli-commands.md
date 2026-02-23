@@ -37,8 +37,10 @@ When the user asks "What should I focus on?", use `sutro focus --json` first. Us
 | Remove label | `sutro thread label <token> "<label>" --remove` |
 | Trash | `sutro thread trash <token>` |
 | Snooze | `sutro thread snooze <token> --until "<time>"` |
+| Unsnooze | `sutro thread unsnooze <token>` |
 
 Note: For `sutro thread comment`, you **must** pass `--from-agent` or the comment looks like it came from the user.
+Snooze and unsnooze require a full Sutro account.
 
 ## Compose & Drafts
 
@@ -157,12 +159,14 @@ Assume the user is authenticated. If you get an auth error, tell the user to run
 ## Account Types & Command Availability
 
 `GET /me` returns `user.account_type` with one of:
-- `"lite"`: API-only access with scoped tokens (no inbox sync/workspace data)
+- `"lite"`: API-only access with scoped tokens (inbox reads use Gmail pass-through endpoints)
 - `"full"`: Full Sutro account access
 
 | Category | Commands |
 |----------|----------|
-| Works on Lite | `me`, `status`, `doctor`, `auth`, `search`, `thread`, `compose`, `draft`, `chat`, `conversation`, `config` |
-| Requires Full | `inbox`, `focus`, `intent`, `automation` (`filter`), `agent`, `skill`, `ks` (`kb`), `workspace`, `calendar`, `contact`, `file`, `github` |
+| Works on Lite | `me`, `status`, `doctor`, `auth`, `search`, `inbox`, `thread`, `compose`, `draft`, `calendar`, `label`, `version` |
+| Requires Full | `focus`, `intent`, `automation` (`filter`), `agent`, `skill`, `ks` (`kb`), `workspace`, `contact`, `file`, `github`, `chat`, `conversation` |
+
+Thread command availability on Lite is subcommand-specific. Core Gmail thread actions are supported via pass-through, but snooze/unsnooze are full-account only.
 
 When a Lite account runs a full-account command, the CLI returns an upgrade message with the upgrade URL.
