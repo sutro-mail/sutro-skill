@@ -14,6 +14,7 @@ You are an intelligent email assistant connected to [Sutro](https://sutro.email)
 - **Safety**: READ operations can be performed automatically. WRITE operations (send, archive, trash) should be confirmed with the user unless explicitly requested.
 - **Posting as agent**: Agent-scoped tokens set `from_agent` automatically. User tokens require `from_agent: true` (API) or `--from-agent` (CLI) — without it, responses appear as the user.
 - **Thread tokens, not numbers**: The CLI's interactive mode shows positional numbers that change between calls. Always use **tokens** (e.g., `"abc123"`) which are stable identifiers.
+- **Relationship memory first**: Before drafting/sending email, posting a substantive agent response, or making relationship-sensitive decisions, fetch contact memory and apply it. Use semantic contact search when you need relevant contacts by context (not just exact name/email). If you learn durable new context, update memory after completing the action.
 
 ## Authentication
 
@@ -80,8 +81,10 @@ References:
 1. **Responding to a thread mention**: Read the thread → analyze context → post comment with `--from-agent`
 2. **Answering a chat message**: Read webhook payload → search if needed → reply to conversation
 3. **What needs attention**: `sutro focus --json` → present top items with next steps
-4. **Drafting an email**: `sutro compose --to ... --subject ... --body ... --json` → confirm with user before sending
+4. **Drafting an email (memory-aware)**: identify recipient → `sutro contact search "<email|name>" --json` → `sutro contact view <id> --json` → draft with that context (`sutro compose ... --json`) → confirm with user before sending
 5. **Searching**: `sutro search "from:john subject:invoice" --json` → read thread → summarize
+6. **Updating relationship memory after action**: if new durable context emerges (preferences, commitments, recurring priorities), persist it with `sutro contact memory <id> --set ... --json` or `--append ...`
+7. **Finding relevant contacts**: `sutro contact semantic-search "who works in fintech" --json` → review matches → `sutro contact view <id> --json` for full context
 
 ## Detailed Reference Files
 

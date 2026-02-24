@@ -83,7 +83,27 @@ Examples:
 
 | Action | Command |
 |--------|---------|
-| (Contacts are accessed via search or thread viewing) | |
+| List contacts | `sutro contact --json` |
+| View contact | `sutro contact view <id> --json` |
+| Search contacts | `sutro contact search "<query>" --json` |
+| Semantic search contacts | `sutro contact semantic-search "<query>" --json` |
+| Mark important | `sutro contact important <id>` |
+| Remove important | `sutro contact unimportant <id>` |
+| View memory | `sutro contact memory <id> --json` |
+| Set memory | `sutro contact memory <id> --set "<text>" --json` |
+| Append memory | `sutro contact memory <id> --append "<text>" --json` |
+| Clear memory | `sutro contact memory <id> --clear --json` |
+
+Memory-aware action pattern (for drafting/sending/replying):
+1. `sutro contact search "<email-or-name>" --json`
+2. `sutro contact view <id> --json` (read `contact.memory`)
+3. Take action (`compose`, `thread comment`, etc.) using that context
+4. Save durable new context with `sutro contact memory <id> --append "<new context>" --json`
+
+Semantic contact discovery:
+1. `sutro contact semantic-search "<natural language query>" --json`
+2. `sutro contact view <id> --json` (read full memory + recent threads)
+3. Take action using that context
 
 ## Files
 

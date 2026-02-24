@@ -17,7 +17,7 @@ Agent API tokens have scopes that control what endpoints they can access.
 | `comment` | Create/update/delete comments on threads, send conversation messages |
 | `draft` | Create/update/delete email drafts |
 | `send` | Send emails (`POST /emails`), schedule/unschedule drafts |
-| `manage` | Archive, unarchive, trash, snooze, read/unread, block sender, unsubscribe, share, merge, bulk operations |
+| `manage` | Archive, unarchive, trash, snooze, read/unread, block sender, unsubscribe, share, merge, bulk operations, contact updates |
 | `settings` | View and update personal settings (`/settings`) |
 | `automation` | Manage automations, custom inboxes, knowledge sources, and skills |
 | `agent_admin` | Sensitive: manage agents, credentials, and token scopes |
@@ -263,6 +263,33 @@ Reply body:
 ```json
 { "source_type": "google_doc", "document_id": "https://docs.google.com/document/d/..." }
 ```
+
+## Contacts
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/contacts` | List contacts (`read`) |
+| `GET` | `/contacts/semantic_search?q=<query>&limit=10` | Semantic search across contact memories (`read`) |
+| `GET` | `/contacts/:id` | View contact details + recent threads (`read`) |
+| `PATCH` | `/contacts/:id/toggle_important` | Toggle VIP status (`manage`) |
+| `PATCH` | `/contacts/:id/memory` | Update contact memory (`manage`) |
+
+Memory body:
+```json
+{ "memory": "Prefers short updates. Waiting on contract redlines." }
+```
+
+Set `"memory"` to an empty string to clear the saved memory.
+
+Use keyword search (`GET /contacts?q=`) when looking up a specific person by name or email.
+Use semantic search (`GET /contacts/semantic_search?q=`) for open-ended relationship queries like
+"who works in AI?" or "contacts who mentioned fundraising."
+
+Memory-aware action pattern (for drafting/sending/replying):
+1. `GET /contacts?q=<email-or-name>` (find contact ID)
+2. `GET /contacts/:id` (read `contact.memory`)
+3. Take action (`POST /emails`, `POST /threads/:token/comments`, etc.) using that context
+4. `PATCH /contacts/:id/memory` to persist durable new relationship context
 
 ## Thread Response Format
 
