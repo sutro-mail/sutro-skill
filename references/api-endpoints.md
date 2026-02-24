@@ -18,9 +18,13 @@ Agent API tokens have scopes that control what endpoints they can access.
 | `draft` | Create/update/delete email drafts |
 | `send` | Send emails (`POST /emails`), schedule/unschedule drafts |
 | `manage` | Archive, unarchive, trash, snooze, read/unread, block sender, unsubscribe, share, merge, bulk operations |
-| `admin` | Settings, automations, custom inboxes, knowledge sources, skills, agents, workspace invites |
+| `settings` | View and update personal settings (`/settings`) |
+| `automation` | Manage automations, custom inboxes, knowledge sources, and skills |
+| `agent_admin` | Sensitive: manage agents, credentials, and token scopes |
+| `workspace` | Manage workspace members and invitations |
 | `calendar_read` | View calendar events, availability, and pending invites |
 | `calendar_write` | Create, update, and delete events, respond to invites |
+| `admin` | Legacy scope (deprecated). Kept for backward compatibility. |
 
 **Default scopes for new agents:** `read`, `comment` (safe by default).
 
